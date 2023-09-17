@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "S.O.S.I.T.",
-    "dateExported": "2023-09-17T03:03:33.706Z",
+    "dateExported": "2023-09-17T19:30:55.932Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -14,7 +14,7 @@
             "method": "POST",
             "sortNum": 12500,
             "created": "2023-09-16T22:23:36.531Z",
-            "modified": "2023-09-16T22:25:39.861Z",
+            "modified": "2023-09-17T19:04:55.902Z",
             "headers": [],
             "params": [],
             "body": {
@@ -33,12 +33,12 @@
             "method": "POST",
             "sortNum": 16250,
             "created": "2023-09-16T20:24:06.386Z",
-            "modified": "2023-09-16T22:46:46.681Z",
+            "modified": "2023-09-17T18:38:34.842Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"data\": {\n    \"usuario\": {\n      \"nome\": \"Nome Cliente\",\n      \"email\": \"cliente2@login.com\",\n      \"senha\": \"1234\"\n    },\n    \"contato\": {\n      \"email\": \"cliente@contato.com\",\n      \"telefone\": \"(99) 9.9999-9999\",\n      \"nome_contato\": \"Nome Contato\"\n    }\n  }\n}",
+                "raw": "{\n  \"data\": {\n    \"usuario\": {\n      \"nome\": \"Nome Cliente\",\n      \"email\": \"cliente@login.com\",\n      \"senha\": \"1234\"\n    },\n    \"contato\": {\n      \"email_contato\": \"cliente@contato.com\",\n      \"telefone\": \"(99) 9.9999-9999\",\n      \"nome_contato\": \"Nome Contato\"\n    }\n  }\n}",
                 "form": []
             },
             "tests": []
@@ -71,13 +71,30 @@
             "method": "DELETE",
             "sortNum": 30000,
             "created": "2023-09-16T22:45:51.607Z",
-            "modified": "2023-09-16T22:49:56.436Z",
+            "modified": "2023-09-17T18:41:36.360Z",
             "headers": [],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"data\": {\n    \"id\": \"6\"\n  }\n}",
-                "form": []
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidGlwbyI6ImNsaWVudGUiLCJpYXQiOjE2OTQ5NzYwODF9.1MgAezxz0XalAPwXb7WKf-tCo2vXOifNXyJqhcHMEAg"
+            },
+            "tests": []
+        },
+        {
+            "_id": "063959d6-1e13-4b6a-9de3-b92f6d1eeca0",
+            "colId": "f81d043e-21d8-4953-8ae7-1f0a8880a713",
+            "containerId": "",
+            "name": "Listar Meu Perfil",
+            "url": "http://localhost:3333/usuario/listar-meu-perfil",
+            "method": "GET",
+            "sortNum": 35000,
+            "created": "2023-09-17T19:01:40.768Z",
+            "modified": "2023-09-17T19:05:11.640Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidGlwbyI6ImVtcHJlc2EiLCJpYXQiOjE2OTQ5Nzc0OTV9.zPUAL8PliLKGSfgt1gbnly_oUxYIl1Xx-Gn4QIm8Vog"
             },
             "tests": []
         },
@@ -86,11 +103,11 @@
             "colId": "f81d043e-21d8-4953-8ae7-1f0a8880a713",
             "containerId": "",
             "name": "Listar Todos Usuários",
-            "url": "http://localhost:3333/usuario/listar-todos/cliente",
+            "url": "http://localhost:3333/usuario/listar-todos/empresa",
             "method": "GET",
             "sortNum": 40000,
             "created": "2023-09-16T22:26:20.427Z",
-            "modified": "2023-09-16T22:37:31.332Z",
+            "modified": "2023-09-17T18:48:21.720Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -100,11 +117,11 @@
             "colId": "f81d043e-21d8-4953-8ae7-1f0a8880a713",
             "containerId": "",
             "name": "Listar Usuário Por ID",
-            "url": "http://localhost:3333/usuario/listar-por-id/5/cliente",
+            "url": "http://localhost:3333/usuario/listar-por-id/2/empresa",
             "method": "GET",
             "sortNum": 50000,
             "created": "2023-09-16T22:29:57.365Z",
-            "modified": "2023-09-16T23:04:35.521Z",
+            "modified": "2023-09-17T18:49:24.703Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -118,13 +135,17 @@
             "method": "PATCH",
             "sortNum": 70000,
             "created": "2023-09-17T00:11:27.258Z",
-            "modified": "2023-09-17T01:05:40.147Z",
+            "modified": "2023-09-17T19:09:13.252Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"data\": {\n    \"idUsuario\": \"1\",\n    \"contato\": {\n      \"email_contato\": \"cliente@contato.com\",\n      \"telefone\": \"(99) 9.9999-9999\",\n      \"nome_contato\": \"Nome Contato\"\n    }\n  }\n}",
+                "raw": "{\n  \"data\": {\n    \"contato\": {\n      \"email_contato\": \"cliente@contato.com\",\n      \"telefone\": \"(99) 9.9999-9999\",\n      \"nome_contato\": \"Nome Contato\"\n    }\n  }\n}",
                 "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidGlwbyI6ImVtcHJlc2EiLCJpYXQiOjE2OTQ5Nzc3MzV9.RmaTcWdg0RR2EPbafLv0Ds3djmF6KTNuyf4YPB4jHUg"
             },
             "tests": []
         },
@@ -137,13 +158,17 @@
             "method": "PATCH",
             "sortNum": 75000,
             "created": "2023-09-17T02:20:23.045Z",
-            "modified": "2023-09-17T02:20:23.045Z",
+            "modified": "2023-09-17T19:09:26.738Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"data\": {\n    \"idUsuario\": \"2\",\n    \"endereco\": {\n      \"cep\": \"11111-111\",\n      \"rua\": \"Rua\",\n      \"num\": \"1\",\n      \"cidade\": \"Cidade\",\n      \"estado\": \"Estado\"\n    }\n  }\n}",
+                "raw": "{\n  \"data\": {\n    \"endereco\": {\n      \"cep\": \"11111-111\",\n      \"rua\": \"Rua\",\n      \"num\": \"1\",\n      \"cidade\": \"Cidade\",\n      \"estado\": \"Estado\"\n    }\n  }\n}",
                 "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidGlwbyI6ImVtcHJlc2EiLCJpYXQiOjE2OTQ5Nzc3MzV9.RmaTcWdg0RR2EPbafLv0Ds3djmF6KTNuyf4YPB4jHUg"
             },
             "tests": []
         },
@@ -156,13 +181,17 @@
             "method": "PATCH",
             "sortNum": 80000,
             "created": "2023-09-17T01:23:20.530Z",
-            "modified": "2023-09-17T02:21:36.836Z",
+            "modified": "2023-09-17T19:09:43.036Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"data\": {\n    \"idUsuario\": \"2\",\n    \"informacoes_empresa\": {\n      \"cnpj\": \"email@contato.com\",\n      \"descricao\": \"Descrição\",\n      \"link_site\": \"https://www.google.com/\",\n      \"img_perfil\": \"https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png\"\n    }\n  }\n}",
+                "raw": "{\n  \"data\": {\n    \"informacoes_empresa\": {\n      \"cnpj\": \"email@contato.com\",\n      \"descricao\": \"Descrição\",\n      \"link_site\": \"https://www.google.com/\",\n      \"img_perfil\": \"https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png\"\n    }\n  }\n}",
                 "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidGlwbyI6ImVtcHJlc2EiLCJpYXQiOjE2OTQ5Nzc3MzV9.RmaTcWdg0RR2EPbafLv0Ds3djmF6KTNuyf4YPB4jHUg"
             },
             "tests": []
         },
@@ -175,13 +204,17 @@
             "method": "PATCH",
             "sortNum": 90000,
             "created": "2023-09-17T02:42:18.560Z",
-            "modified": "2023-09-17T02:43:58.990Z",
+            "modified": "2023-09-17T19:09:50.840Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"data\": {\n    \"idUsuario\": \"2\",\n    \"dados_bancarios\": {\n      \"banco\": \"Banco\",\n      \"agencia\": \"Agencia\",\n      \"digito\": \"0\",\n      \"tipo_conta\": \"Tipo\",\n      \"conta\": \"Conta\"\n    }\n  }\n}",
+                "raw": "{\n  \"data\": {\n    \"dados_bancarios\": {\n      \"banco\": \"Banco\",\n      \"agencia\": \"Agencia\",\n      \"digito\": \"0\",\n      \"tipo_conta\": \"Tipo\",\n      \"conta\": \"Conta\"\n    }\n  }\n}",
                 "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidGlwbyI6ImVtcHJlc2EiLCJpYXQiOjE2OTQ5Nzc3MzV9.RmaTcWdg0RR2EPbafLv0Ds3djmF6KTNuyf4YPB4jHUg"
             },
             "tests": []
         }
