@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_usuario` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
   `tipo` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -32,16 +32,16 @@ CREATE TABLE `usuario` (
   `id_endereco` int DEFAULT NULL,
   `id_informacoes_empresa` int DEFAULT NULL,
   `id_dados_bancarios` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `email` (`email`),
   KEY `id_contato` (`id_contato`),
   KEY `id_endereco` (`id_endereco`),
   KEY `id_informacoes_empresa` (`id_informacoes_empresa`),
   KEY `id_dados_bancarios` (`id_dados_bancarios`),
-  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_contato`) REFERENCES `contato` (`id`),
-  CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`id_endereco`) REFERENCES `endereco` (`id`),
-  CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`id_informacoes_empresa`) REFERENCES `informacoes_empresa` (`id`),
-  CONSTRAINT `usuario_ibfk_4` FOREIGN KEY (`id_dados_bancarios`) REFERENCES `dados_bancarios` (`id`)
+  CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_contato`) REFERENCES `contato` (`id_contato`),
+  CONSTRAINT `usuario_ibfk_2` FOREIGN KEY (`id_endereco`) REFERENCES `endereco` (`id_endereco`),
+  CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`id_informacoes_empresa`) REFERENCES `informacoes_empresa` (`id_informacoes_empresa`),
+  CONSTRAINT `usuario_ibfk_4` FOREIGN KEY (`id_dados_bancarios`) REFERENCES `dados_bancarios` (`id_dados_bancarios`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -63,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-13 10:37:10
+-- Dump completed on 2023-09-20 11:57:18

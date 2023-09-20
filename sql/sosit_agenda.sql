@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `agenda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `agenda` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_agenda` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
   `nome` varchar(255) DEFAULT NULL,
   `servico` varchar(255) DEFAULT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE `agenda` (
   `horarios_sex` json DEFAULT NULL,
   `horarios_sab` json DEFAULT NULL,
   `horarios_dom` json DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id_agenda`),
   KEY `id_usuario` (`id_usuario`),
-  CONSTRAINT `agenda_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
+  CONSTRAINT `agenda_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-13 10:37:10
+-- Dump completed on 2023-09-20 11:57:18

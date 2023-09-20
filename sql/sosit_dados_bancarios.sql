@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `dados_bancarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dados_bancarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_dados_bancarios` int NOT NULL AUTO_INCREMENT,
   `banco` varchar(255) DEFAULT NULL,
   `agencia` varchar(255) DEFAULT NULL,
   `digito` varchar(255) DEFAULT NULL,
   `tipo_conta` varchar(255) DEFAULT NULL,
   `conta` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id_dados_bancarios`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-13 10:37:10
+-- Dump completed on 2023-09-20 11:57:17

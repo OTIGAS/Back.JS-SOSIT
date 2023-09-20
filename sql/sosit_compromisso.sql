@@ -23,16 +23,16 @@ DROP TABLE IF EXISTS `compromisso`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `compromisso` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_compromisso` int NOT NULL AUTO_INCREMENT,
   `id_agenda` int NOT NULL,
-  `id_cliente` int NOT NULL,
+  `id_usuario` int NOT NULL,
   `data_completa` date DEFAULT NULL,
   `horario` time DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id_compromisso`),
   KEY `id_agenda` (`id_agenda`),
-  KEY `id_cliente` (`id_cliente`),
-  CONSTRAINT `compromisso_ibfk_1` FOREIGN KEY (`id_agenda`) REFERENCES `agenda` (`id`),
-  CONSTRAINT `compromisso_ibfk_2` FOREIGN KEY (`id_cliente`) REFERENCES `usuario` (`id`)
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `compromisso_ibfk_1` FOREIGN KEY (`id_agenda`) REFERENCES `agenda` (`id_agenda`),
+  CONSTRAINT `compromisso_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-13 10:37:10
+-- Dump completed on 2023-09-20 11:57:18

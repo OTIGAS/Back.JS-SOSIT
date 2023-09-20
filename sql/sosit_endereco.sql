@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `endereco`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `endereco` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id_endereco` int NOT NULL AUTO_INCREMENT,
   `cep` varchar(255) DEFAULT NULL,
   `rua` varchar(255) DEFAULT NULL,
   `num` varchar(255) DEFAULT NULL,
   `cidade` varchar(255) DEFAULT NULL,
   `estado` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id_endereco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-13 10:37:10
+-- Dump completed on 2023-09-20 11:57:18

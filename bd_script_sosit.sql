@@ -87,3 +87,38 @@ CREATE TABLE compromisso (
     FOREIGN KEY (id_agenda) REFERENCES agenda (id_agenda),
 	FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
 );
+
+DELIMITER //
+
+CREATE PROCEDURE deletar_usuario_com_relacionamentos(IN id_usuario_param INT)
+BEGIN
+    DECLARE exit handler for sqlexception
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+    
+    DELETE FROM contato WHERE id_contato = (SELECT id_contato FROM usuario WHERE id_usuario = id_usuario_param);
+    DELETE FROM endereco WHERE id_endereco = (SELECT id_endereco FROM usuario WHERE id_usuario = id_usuario_param);
+    DELETE FROM informacoes_empresa WHERE id_informacoes_empresa = (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = id_usuario_param);
+    DELETE FROM dados_bancarios WHERE id_dados_bancarios = (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = id_usuario_param);
+    DELETE FROM usuario WHERE id_usuario = id_usuario_param;
+
+    COMMIT;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER deletar_usuario_trigger
+AFTER DELETE ON usuario
+FOR EACH ROW
+BEGIN
+    CALL deletar_usuario_com_relacionamentos(OLD.id_usuario);
+END//
+
+DELIMITER ;
+
