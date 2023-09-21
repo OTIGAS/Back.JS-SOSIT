@@ -153,8 +153,11 @@ class UsuarioRepository {
 
   async criarEmpresa(usuario, contato, endereco, informacoes_empresa, dados_bancarios) {
     try {
-      usuario.senha = await crypto.encripto(usuario.senha)
-      return await new Promise((resolve, reject) => [
+      if (typeof usuario.senha !== 'string') {
+        throw new Error("A senha do usuário não é uma string válida.");
+      }
+      usuario.senha = await crypto.encripto(usuario.senha);
+      return await new Promise((resolve, reject) => {
         db.beginTransaction((err) => {
           if(err) {
             reject("Ocorreu um erro ao criar a transação.")
@@ -335,7 +338,7 @@ class UsuarioRepository {
             }
           )
         })
-      ])
+      })
     }
     catch (error) {
       console.log(error)
@@ -355,6 +358,7 @@ class UsuarioRepository {
           ],
           (error, response) => {
             if (error) {
+              console.log(error)
               return reject({ erro: "Falha ao deletar o usuario." })
             } else if (response.affectedRows === 0) {
               return resolve({ erro: "Nenhum usuario encontrado." })
