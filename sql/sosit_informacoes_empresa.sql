@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: sosit
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	8.0.34
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `informacoes_empresa` (
   `link_site` varchar(255) DEFAULT NULL,
   `img_perfil` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_informacoes_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `informacoes_empresa` (
 
 LOCK TABLES `informacoes_empresa` WRITE;
 /*!40000 ALTER TABLE `informacoes_empresa` DISABLE KEYS */;
+INSERT INTO `informacoes_empresa` VALUES (1,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(2,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(3,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(4,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(6,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(7,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(8,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(9,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem'),(10,'00-000-0001/00','Descricao','www.site.com.br','Caminho imagem');
 /*!40000 ALTER TABLE `informacoes_empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-20 11:57:18
+-- Dump completed on 2023-10-06 17:33:29

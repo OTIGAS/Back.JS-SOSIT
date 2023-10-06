@@ -88,37 +88,57 @@ CREATE TABLE compromisso (
 	FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
 );
 
-DELIMITER //
+DROP TABLE logs_delete;
+CREATE TABLE logs_delete (
+	contato_id VARCHAR(05), 
+    endereco_id VARCHAR(05), 
+    informacoes_empresa_id VARCHAR(05), 
+    dados_bancarios_id VARCHAR(05)
+);
 
-CREATE PROCEDURE deletar_usuario_com_relacionamentos(IN id_usuario_param INT)
+# PROCEDURE
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleta_dados_usuario`(contato_id INT, endereco_id INT, informacoes_empresa_id INT, dados_bancarios_id INT)
 BEGIN
-    DECLARE exit handler for sqlexception
-    BEGIN
-        ROLLBACK;
-        RESIGNAL;
-    END;
-
-    START TRANSACTION;
-    
-    DELETE FROM contato WHERE id_contato = (SELECT id_contato FROM usuario WHERE id_usuario = id_usuario_param);
-    DELETE FROM endereco WHERE id_endereco = (SELECT id_endereco FROM usuario WHERE id_usuario = id_usuario_param);
-    DELETE FROM informacoes_empresa WHERE id_informacoes_empresa = (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = id_usuario_param);
-    DELETE FROM dados_bancarios WHERE id_dados_bancarios = (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = id_usuario_param);
-    DELETE FROM usuario WHERE id_usuario = id_usuario_param;
-
-    COMMIT;
-END//
-
-DELIMITER ;
+	INSERT IGNORE INTO logs_delete (id_contato, id_endereco, id_informacoes_empresa, id_dados_bancarios) 
+		VALUES (contato_id, endereco_id, informacoes_empresa_id, dados_bancarios_id);
+        
+	SET FOREIGN_KEY_CHECKS=0;
+	DELETE FROM contato WHERE id_contato = contato_id;
+    DELETE FROM endereco WHERE id_endereco = endereco_id;
+    DELETE FROM informacoes_empresa WHERE id_informacoes_empresa = informacoes_empresa_id;
+    DELETE FROM dados_bancarios WHERE id_dados_bancarios = dados_bancarios_id;
+    SET FOREIGN_KEY_CHECKS=1;
+END
 
 DELIMITER //
 
-CREATE TRIGGER deletar_usuario_trigger
-AFTER DELETE ON usuario
+# PROCEDURE
+CREATE TRIGGER deleta_dados_usuario
+BEFORE DELETE ON usuario
 FOR EACH ROW
 BEGIN
-    CALL deletar_usuario_com_relacionamentos(OLD.id_usuario);
-END//
+    DECLARE contato_id INT;
+    DECLARE endereco_id INT;
+    DECLARE informacoes_empresa_id INT;
+    DECLARE dados_bancarios_id INT;
+    
+    SET contato_id = (SELECT id_contato FROM usuario WHERE id_usuario = OLD.id_usuario);
+    SET endereco_id = (SELECT id_endereco FROM usuario WHERE id_usuario = OLD.id_usuario);
+    SET informacoes_empresa_id = (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = OLD.id_usuario);
+    SET dados_bancarios_id = (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = OLD.id_usuario);
+    
+    INSERT IGNORE INTO logs_delete (id_contato, id_endereco, id_informacoes_empresa, id_dados_bancarios, id_usuario) 
+		VALUES (
+        (SELECT id_contato FROM usuario WHERE id_usuario = OLD.id_usuario), 
+        (SELECT id_endereco FROM usuario WHERE id_usuario = OLD.id_usuario), 
+        (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = OLD.id_usuario), 
+        (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = OLD.id_usuario), 
+        OLD.id_usuario);
+    
+    CALL deleta_dados_usuario(contato_id, endereco_id, informacoes_empresa_id, dados_bancarios_id);
+END;
+//
 
 DELIMITER ;
 
+DROP TRIGGER deleta_dados_usuario;
