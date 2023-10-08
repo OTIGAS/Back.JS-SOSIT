@@ -1,8 +1,5 @@
 const db = require('../database')
 
-const crypto = require('../../config/crypto')
-const jsonwebtoken = require('../../config/jsonwebtoken')
-
 class UsuarioRepository {
   constructor() {
     this.db = db
@@ -242,6 +239,36 @@ class UsuarioRepository {
             return resolve({ erro: "Nenhuma agenda encontrada." })
           } else {
             return resolve(response)
+          }
+        }
+      )
+    }).catch(error => {
+      console.log(error)
+      throw new Error(error)
+    })
+  }
+
+  async atualizarHorariosAgenda(horarios) {
+    return await new Promise((resolve, reject) => {
+      this.db.query(
+        `
+          UPDATE agenda
+            SET horarios_seg = JSON_SET(horarios_seg, ?, ?)
+            SET horarios_ter = JSON_SET(horarios_ter, ?, ?)
+            SET horarios_qua = JSON_SET(horarios_qua, ?, ?)
+            SET horarios_qui = JSON_SET(horarios_qui, ?, ?)
+            SET horarios_sex = JSON_SET(horarios_sex, ?, ?)
+            SET horarios_sab = JSON_SET(horarios_sab, ?, ?)
+            SET horarios_dom = JSON_SET(horarios_dom, ?, ?)
+        `,
+        [],
+        (error, response) => {
+          if (error) {
+            return reject({ erro: "Falha ao atualizar os horários da Agenda." })
+          } else if (response.affectedRows === 0) {
+            return resolve({ erro: "Nenhuma Agenda encontrada." })
+          } else {
+            return resolve({ mensagem: "Horários da Agenda atualizados com sucesso." })
           }
         }
       )

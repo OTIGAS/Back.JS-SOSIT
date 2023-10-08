@@ -252,6 +252,8 @@ class AgendaController {
       return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
+
+  
 }
 
 module.exports = AgendaController

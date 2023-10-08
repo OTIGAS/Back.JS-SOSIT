@@ -99,15 +99,12 @@ CREATE TABLE logs_delete (
 # PROCEDURE
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleta_dados_usuario`(contato_id INT, endereco_id INT, informacoes_empresa_id INT, dados_bancarios_id INT)
 BEGIN
-	INSERT IGNORE INTO logs_delete (id_contato, id_endereco, id_informacoes_empresa, id_dados_bancarios) 
-		VALUES (contato_id, endereco_id, informacoes_empresa_id, dados_bancarios_id);
-        
 	SET FOREIGN_KEY_CHECKS=0;
 	DELETE FROM contato WHERE id_contato = contato_id;
-    DELETE FROM endereco WHERE id_endereco = endereco_id;
-    DELETE FROM informacoes_empresa WHERE id_informacoes_empresa = informacoes_empresa_id;
-    DELETE FROM dados_bancarios WHERE id_dados_bancarios = dados_bancarios_id;
-    SET FOREIGN_KEY_CHECKS=1;
+  DELETE FROM endereco WHERE id_endereco = endereco_id;
+  DELETE FROM informacoes_empresa WHERE id_informacoes_empresa = informacoes_empresa_id;
+  DELETE FROM dados_bancarios WHERE id_dados_bancarios = dados_bancarios_id;
+  SET FOREIGN_KEY_CHECKS=1;
 END
 
 # TRIGGER
