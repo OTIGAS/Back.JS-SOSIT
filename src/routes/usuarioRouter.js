@@ -3,11 +3,9 @@ const router = express.Router()
 
 const { verificaToken } = require('../middleware/verificaToken')
 
-//Importação Usuario
 const UsuarioController = require('../controller/usuarioController')
 const usuarioController = new UsuarioController()
 
-//Rotas Usuarios
 router.post('/usuario/autenticar', usuarioController.autenticarUsuario) //Autenticar Usuario
 
 router.post('/usuario/cliente', usuarioController.criarCliente) //Criar Cliente

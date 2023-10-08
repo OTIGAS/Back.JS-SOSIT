@@ -377,7 +377,7 @@ class UsuarioRepository {
         [],
         (error, response) => {
           if (error) {
-            return reject({ erro: "E-mail já cadastrado." })
+            return reject({ erro: "Falha ao listar todos os clientes." })
           } else if (!response.length) {
             return resolve({ mensagem: "Nenhum usuario encontrado." })
           } else {
@@ -406,9 +406,9 @@ class UsuarioRepository {
         (error, response) => {
           console.log(response)
           if (error) {
-            return reject({ erro: "Falha ao listar os usuarios." })
+            return reject({ erro: "Falha ao listar as empresas." })
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum usuario encontrado." })
+            return resolve({ mensagem: "Nenhum empresa encontrado." })
           } else {
             return resolve(response)
           }
@@ -426,7 +426,7 @@ class UsuarioRepository {
         `
           SELECT u.id_usuario, u.nome, u.tipo, c.* FROM usuario u
           INNER JOIN contato c ON u.id_contato = c.id_contato
-          WHERE u.id_usuario = ?;
+          WHERE u.id_usuario = ? AND u.tipo LIKE "cliente";
         `,
         [
           idUsuario
@@ -434,9 +434,9 @@ class UsuarioRepository {
         (error, response) => {
           if (error) {
             console.log(error)
-            return reject({ erro: "Falha ao listar o usuario." })
+            return reject({ erro: "Falha ao listar o cliente." })
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum usuario encontrado." })
+            return resolve({ mensagem: "Nenhum cliente encontrado." })
           } else {
             return resolve(response)
           }
@@ -457,16 +457,16 @@ class UsuarioRepository {
           INNER JOIN endereco e ON u.id_endereco = e.id_endereco
           INNER JOIN informacoes_empresa ie ON u.id_informacoes_empresa = ie.id_informacoes_empresa
           INNER JOIN dados_bancarios db ON u.id_dados_bancarios = db.id_dados_bancarios
-          WHERE u.id_usuario = ?;
+          WHERE u.id_usuario = ? AND u.tipo LIKE "empresa";
         `,
         [
           idUsuario
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar o usuario." })
+            return reject({ erro: "Falha ao listar a empresa." })
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum usuario encontrado." })
+            return resolve({ mensagem: "Nenhuma empresa encontrada." })
           } else {
             return resolve(response)
           }
@@ -494,9 +494,9 @@ class UsuarioRepository {
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar o usuario." })
+            return reject({ erro: "Falha ao listar a empresa." })
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum usuario encontrado." })
+            return resolve({ mensagem: "Nenhuma empresa encontrada." })
           } else {
             return resolve(response)
           }
@@ -562,7 +562,7 @@ class UsuarioRepository {
           } else if (response.affectedRows === 0) {
             return resolve({ erro: "Dados de endereço deste usuário, não encontrados." })
           } else {
-            return resolve({ mensagem: "Dados de contato atualizados com sucesso." })
+            return resolve({ mensagem: "Dados de endereço atualizados com sucesso." })
           }
         }
       )

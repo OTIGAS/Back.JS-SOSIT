@@ -11,20 +11,20 @@ class UsuarioController {
       const {email, senha} = data
 
       if(!email || !senha) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const response = await usuarioRepository.autenticarUsuario(email,senha)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -40,7 +40,7 @@ class UsuarioController {
         !usuario.email || 
         !usuario.senha
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Usuário ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Usuário ausente(s)." })
       }
 
       const { contato } = data
@@ -50,20 +50,20 @@ class UsuarioController {
         !contato.telefone || 
         !contato.nome_contato
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
       }
 
       const response = await usuarioRepository.criarCliente(usuario, contato)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -80,7 +80,7 @@ class UsuarioController {
         !usuario.email || 
         !usuario.senha
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Usuário ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Usuário ausente(s)." })
       }
 
       const { contato } = data
@@ -90,7 +90,7 @@ class UsuarioController {
         !contato.telefone || 
         !contato.nome_contato
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
       }
 
       const { endereco } = data
@@ -102,7 +102,7 @@ class UsuarioController {
         !endereco.cidade ||
         !endereco.estado
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Endereco ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Endereco ausente(s)." })
       }
 
       const { informacoes_empresa } = data
@@ -113,7 +113,7 @@ class UsuarioController {
         !informacoes_empresa.link_site ||
         !informacoes_empresa.img_perfil
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Empresa ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Empresa ausente(s)." })
       }
 
       const { dados_bancarios } = data
@@ -125,7 +125,7 @@ class UsuarioController {
         !dados_bancarios.tipo_conta ||
         !dados_bancarios.conta
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) dos Dados Bancarios ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) dos Dados Bancarios ausente(s)." })
       }
 
       const response = await usuarioRepository.criarEmpresa(
@@ -137,14 +137,14 @@ class UsuarioController {
       )
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -155,20 +155,20 @@ class UsuarioController {
       const idUsuario = req.user.id
 
       if(!idUsuario) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const response = await usuarioRepository.deletaUsuario(idUsuario)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -179,7 +179,7 @@ class UsuarioController {
       const { tipo } = req.params
 
       if (!tipo) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
       
       let response
@@ -193,14 +193,14 @@ class UsuarioController {
       }
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -212,7 +212,7 @@ class UsuarioController {
       const tipo = req.user.tipo
 
       if (!idUsuario || !tipo) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       let response
@@ -226,14 +226,14 @@ class UsuarioController {
       }
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -244,7 +244,7 @@ class UsuarioController {
       const { idUsuario, tipo } = req.params
 
       if (!idUsuario || !tipo) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       let response
@@ -258,14 +258,14 @@ class UsuarioController {
       }
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -276,7 +276,7 @@ class UsuarioController {
       const idUsuario = req.user.id
 
       if (!idUsuario) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const { data } = req.body
@@ -288,20 +288,20 @@ class UsuarioController {
         !contato.telefone || 
         !contato.nome_contato
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Contato ausente(s)." })
       }
       
       const response = await usuarioRepository.atualizarContato(idUsuario, contato)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -312,7 +312,7 @@ class UsuarioController {
       const idUsuario = req.user.id
 
       if (!idUsuario) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const { data } = req.body
@@ -326,20 +326,20 @@ class UsuarioController {
         !endereco.cidade || 
         !endereco.estado
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
       }
       
       const response = await usuarioRepository.atualizarEndereco(idUsuario, endereco)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -350,7 +350,7 @@ class UsuarioController {
       const idUsuario = req.user.id
 
       if (!idUsuario) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const { data } = req.body
@@ -363,20 +363,20 @@ class UsuarioController {
         !informacoes_empresa.link_site || 
         !informacoes_empresa.img_perfil
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
       }
       
       const response = await usuarioRepository.atualizarInformacoesEmpresa(idUsuario, informacoes_empresa)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
@@ -387,7 +387,7 @@ class UsuarioController {
       const idUsuario = req.user.id
 
       if (!idUsuario) {
-        res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
       const { data } = req.body
@@ -401,20 +401,20 @@ class UsuarioController {
         !dados_bancarios.tipo_conta || 
         !dados_bancarios.conta
       ) {
-        res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
+        return res.status(400).send({ erro: "Parâmetro(s) do Endereço ausente(s)." })
       }
       
       const response = await usuarioRepository.atualizarDadosBancarios(idUsuario, dados_bancarios)
 
       if (response.erro) {
-        res.status(400).send(response)
+        return res.status(400).send(response)
       } else {
-        res.status(200).send(response)
+        return res.status(200).send(response)
       }
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 }

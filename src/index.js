@@ -16,7 +16,8 @@ const corsOptions = {
 app.use(cors(corsOptions))
 
 const routes = [
-  require('./routes/usuarioRouter')
+  require('./routes/usuarioRouter'),
+  require('./routes/agendaRouter')
 ]
 
 routes.forEach(route => {
