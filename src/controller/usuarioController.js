@@ -24,7 +24,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -144,7 +144,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -168,7 +168,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -200,7 +200,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -233,7 +233,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -265,7 +265,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -301,7 +301,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -339,7 +339,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -376,7 +376,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 
@@ -414,7 +414,7 @@ class UsuarioController {
       console.log(response, date, time)
     } catch (error) {
       console.log(error)
-      return res.status(500).send({ error: 'Erro interno do server' })
+      return res.status(500).send({ erro: 'Erro interno do server' })
     }
   }
 }

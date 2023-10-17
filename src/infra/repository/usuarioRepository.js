@@ -77,7 +77,7 @@ class UsuarioRepository {
               })
             } else if (response.affectedRows === 0) {
               return db.rollback(() => {
-                return reject({
+                return resolve({
                   erro: "Contato não cadastrado.",
                 })
               })
@@ -100,7 +100,7 @@ class UsuarioRepository {
                     console.error(error)
                     if (error.message.includes("Duplicate")) {
                       return db.rollback(() => {
-                        return reject({
+                        return resolve({
                           erro: "E-mail já cadastrado."
                         })
                       })
@@ -113,7 +113,7 @@ class UsuarioRepository {
                     }
                   } else if (response.affectedRows === 0) {
                     return db.rollback(() => {
-                      return reject({
+                      return resolve({
                         erro: "Usuário não cadastrado.",
                       })
                     })
@@ -177,7 +177,7 @@ class UsuarioRepository {
               })
             } else if (response.affectedRows === 0) {
               return db.rollback(() => {
-                return reject({
+                return resolve({
                   erro: "Contato não cadastrado.",
                 })
               })
@@ -197,6 +197,7 @@ class UsuarioRepository {
                 ],
                 (error, response) => {
                   if(error) {
+                    console.log(error)
                     return db.rollback(() => {
                       return reject({
                         erro: "Falha na inclusão do endereço."
@@ -204,7 +205,7 @@ class UsuarioRepository {
                     })
                   } else if (response.affectedRows === 0) {
                     return db.rollback(() => {
-                      return reject({
+                      return resolve({
                         erro: "Endereço não cadastrado.",
                       })
                     })
@@ -223,6 +224,7 @@ class UsuarioRepository {
                       ],
                       (error, response) => {
                         if(error) {
+                          console.log(error)
                           return db.rollback(() => {
                             return reject({
                               erro: "Falha na inclusão das informações da empresa."
@@ -230,7 +232,7 @@ class UsuarioRepository {
                           })
                         } else if (response.affectedRows === 0) {
                           return db.rollback(() => {
-                            return reject({
+                            return resolve({
                               erro: "Informações da empresa não cadastradas.",
                             })
                           })
@@ -250,6 +252,7 @@ class UsuarioRepository {
                             ],
                             (error, response) => {
                               if(error) {
+                                console.log(error)
                                 return db.rollback(() => {
                                   return reject({
                                     erro: "Falha na inclusão dos dados bancarios."
@@ -257,7 +260,7 @@ class UsuarioRepository {
                                 })
                               } else if (response.affectedRows === 0) {
                                 return db.rollback(() => {
-                                  return reject({
+                                  return resolve({
                                     erro: "Dados bancarios não cadastrados.",
                                   })
                                 })
@@ -283,7 +286,7 @@ class UsuarioRepository {
                                     if(error) {
                                       if (error.message.includes("Duplicate")) {
                                         return db.rollback(() => {
-                                          return reject({
+                                          return resolve({
                                             erro: "E-mail já cadastrado."
                                           })
                                         })
@@ -296,7 +299,7 @@ class UsuarioRepository {
                                       }
                                     } else if (response.affectedRows === 0) {
                                       return db.rollback(() => {
-                                        return reject({
+                                        return resolve({
                                           erro: "Usuário não cadastrado.",
                                         })
                                       })
