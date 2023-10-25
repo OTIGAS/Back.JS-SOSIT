@@ -248,22 +248,42 @@ class UsuarioRepository {
     })
   }
 
-  async atualizarHorariosAgenda(horarios) {
+  async atualizarHorariosAgenda(idUsuario, idAgenda, horarios) {
     return await new Promise((resolve, reject) => {
+      const horariosSeg = horarios.seg ? JSON.stringify(horarios.seg) : null
+      const horariosTer = horarios.ter ? JSON.stringify(horarios.ter) : null
+      const horariosQua = horarios.qua ? JSON.stringify(horarios.qua) : null
+      const horariosQui = horarios.qui ? JSON.stringify(horarios.qui) : null
+      const horariosSex = horarios.sex ? JSON.stringify(horarios.sex) : null
+      const horariosSab = horarios.sab ? JSON.stringify(horarios.sab) : null
+      const horariosDom = horarios.dom ? JSON.stringify(horarios.dom) : null
       this.db.query(
         `
           UPDATE agenda
-            SET horarios_seg = JSON_SET(horarios_seg, ?, ?)
-            SET horarios_ter = JSON_SET(horarios_ter, ?, ?)
-            SET horarios_qua = JSON_SET(horarios_qua, ?, ?)
-            SET horarios_qui = JSON_SET(horarios_qui, ?, ?)
-            SET horarios_sex = JSON_SET(horarios_sex, ?, ?)
-            SET horarios_sab = JSON_SET(horarios_sab, ?, ?)
-            SET horarios_dom = JSON_SET(horarios_dom, ?, ?)
+          SET 
+            horarios_seg = ?,
+            horarios_ter = ?,
+            horarios_qua = ?,
+            horarios_qui = ?,
+            horarios_sex = ?,
+            horarios_sab = ?,
+            horarios_dom = ?
+          WHERE id_agenda = ? AND id_usuario = ?;
         `,
-        [],
+        [
+          horariosSeg,
+          horariosTer,
+          horariosQua,
+          horariosQui,
+          horariosSex,
+          horariosSab,
+          horariosDom,
+          idAgenda,
+          idUsuario
+        ],
         (error, response) => {
           if (error) {
+            console.log(error)
             return reject({ erro: "Falha ao atualizar os horários da Agenda." })
           } else if (response.affectedRows === 0) {
             return resolve({ erro: "Nenhuma Agenda encontrada." })

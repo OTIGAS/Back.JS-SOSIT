@@ -21,7 +21,7 @@ class UsuarioRepository {
           if (error) {
             return reject({ erro: "Falha na autenticação." })
           } else if (!response.length) {
-            return resolve({ erro: 'E-mail e/ou Senha inválidos.' })
+            return resolve({ erro: 'E-mail e/ou Senha inválido(s).' })
           } else {
 
             const senha_ecrypted = response[0].senha
@@ -38,7 +38,7 @@ class UsuarioRepository {
                 token 
               })
             } else {
-              return resolve({ erro: 'E-mail e/ou Senha inválidos.' })
+              return resolve({ erro: 'E-mail e/ou Senha inválido(s).' })
             }
           }
         }

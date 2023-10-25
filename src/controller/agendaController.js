@@ -3,8 +3,6 @@ const agendaRepository = new Agenda()
 
 class AgendaController {
   async criarAgenda(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const idUsuario = req.user.id
       const tipo = req.user.tipo
@@ -34,7 +32,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       res.status(500).send({ error: 'Erro interno do server' })
@@ -42,8 +39,6 @@ class AgendaController {
   }
 
   async deletarAgenda(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const tipo = req.user.tipo
 
@@ -74,7 +69,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       res.status(500).send({ error: 'Erro interno do server' })
@@ -82,8 +76,6 @@ class AgendaController {
   }
 
   async listarTodasAgendas(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {   
       const response = await agendaRepository.listarTodasAgendas()
 
@@ -92,7 +84,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -100,8 +91,6 @@ class AgendaController {
   }
 
   async listarAgendaPorIdAgenda(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const { idAgenda } = req.params
 
@@ -116,7 +105,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -124,8 +112,6 @@ class AgendaController {
   }
 
   async listarTodasAgendasPorIdEmpresa(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const { idEmpresa } = req.params
 
@@ -140,7 +126,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -148,8 +133,6 @@ class AgendaController {
   }
 
   async listarAgendasPorNome(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const { nome } = req.params
 
@@ -164,7 +147,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -172,8 +154,6 @@ class AgendaController {
   }
 
   async listarAgendasPorServico(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const { servico } = req.params
 
@@ -188,7 +168,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -196,8 +175,6 @@ class AgendaController {
   }
 
   async listarAgendasPorNomeEmpresa(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const { nomeEmpresa } = req.params
 
@@ -212,7 +189,6 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
@@ -220,8 +196,6 @@ class AgendaController {
   }
 
   async listarTodasAgendasPorToken(req, res) {
-    const date = new Date().toLocaleDateString('pt-BR')
-    const time = new Date().toLocaleTimeString('pt-BR')
     try {
       const tipo = req.user.tipo
 
@@ -246,14 +220,52 @@ class AgendaController {
       } else {
         return res.status(200).send(response)
       }
-      console.log(response, date, time)
     } catch (error) {
       console.log(error)
       return res.status(500).send({ error: 'Erro interno do server' })
     }
   }
 
-  
+  async atualizarHorariosAgenda(req, res) {
+    try {
+      const idUsuario = req.user.id
+      const tipo = req.user.tipo
+
+      if (!idUsuario || !tipo) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+      }
+
+      if (tipo === 'cliente') {
+        return res.status(400).send({ erro: "Não autorizado." })
+      }
+
+      const { data } = req.body
+      if (!data) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+      }
+
+      const { idAgenda } = data
+      if (!idAgenda) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+      }
+
+      const { horarios } = data
+      if (!horarios) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
+      }
+
+      const response = await agendaRepository.atualizarHorariosAgenda(idUsuario, idAgenda, horarios)
+
+      if (response.erro) {
+        return res.status(400).send(response)
+      } else {
+        return res.status(200).send(response)
+      }
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({ error: 'Erro interno do server' })
+    }
+  }
 }
 
 module.exports = AgendaController
