@@ -1,88 +1,84 @@
-const db = require('../database')
+const db = require("../database");
 
-const crypto = require('../../config/crypto')
-const jsonwebtoken = require('../../config/jsonwebtoken')
+const crypto = require("../../config/crypto");
+const jsonwebtoken = require("../../config/jsonwebtoken");
 
 class UsuarioRepository {
   constructor() {
-    this.db = db
+    this.db = db;
   }
 
   async autenticarUsuario(email, senha) {
+    console.log("teste")
     return await new Promise((resolve, reject) => {
       this.db.query(
         `
           SELECT id_usuario, tipo, senha FROM usuario WHERE email = ?;
         `,
-        [
-          email
-        ],
+        [email],
         async (error, response) => {
           if (error) {
-            return reject({ erro: "Falha na autenticação." })
+            return reject({ erro: "Falha na autenticação." });
           } else if (!response.length) {
-            return resolve({ erro: 'E-mail e/ou Senha inválido(s).' })
+            return resolve({ erro: "E-mail e/ou Senha inválido(s)." });
           } else {
+            const senha_ecrypted = response[0].senha;
 
-            const senha_ecrypted = response[0].senha
-
-            let senha_decrypted = await crypto.decripto(senha_ecrypted)
+            let senha_decrypted = await crypto.decripto(senha_ecrypted);
 
             if (senha_decrypted === senha) {
-
-              const token = jsonwebtoken.criaToken({ id: response[0].id_usuario, tipo: response[0].tipo })
-
-              return resolve({ 
-                mensagem: 'Usuário autenticado com sucesso.', 
+              const token = jsonwebtoken.criaToken({
+                id: response[0].id_usuario,
                 tipo: response[0].tipo,
-                token 
-              })
+              });
+
+              return resolve({
+                mensagem: "Usuário autenticado com sucesso.",
+                tipo: response[0].tipo,
+                token,
+              });
             } else {
-              return resolve({ erro: 'E-mail e/ou Senha inválido(s).' })
+              return resolve({ erro: "E-mail e/ou Senha inválido(s)." });
             }
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async criarCliente(usuario, contato) {
-    usuario.senha = await crypto.encripto(usuario.senha)
+    usuario.senha = await crypto.encripto(usuario.senha);
     return await new Promise((resolve, reject) => {
       db.beginTransaction((err) => {
         if (err) {
-          reject("Ocorreu um erro ao criar a transação.")
-          return
+          reject("Ocorreu um erro ao criar a transação.");
+          return;
         }
         return db.execute(
           `
             INSERT INTO contato (email_contato, telefone, nome_contato)
             VALUES (?,?,?);
           `,
-          [
-            contato.email_contato,
-            contato.telefone,
-            contato.nome_contato
-          ],
+          [contato.email_contato, contato.telefone, contato.nome_contato],
           (error, response) => {
-            if(error) {
-              console.error(error)
+            if (error) {
+              console.error(error);
               return db.rollback(() => {
                 return reject({
-                  erro: "Falha na inclusão do contato."
-                })
-              })
+                  erro: "Falha na inclusão do contato.",
+                });
+              });
             } else if (response.affectedRows === 0) {
               return db.rollback(() => {
                 return resolve({
                   erro: "Contato não cadastrado.",
-                })
-              })
+                });
+              });
             } else {
-              const idContato = response.insertId
+              const idContato = response.insertId;
               return db.execute(
                 `
                   INSERT INTO usuario (nome, tipo, email, senha, id_contato)
@@ -90,99 +86,101 @@ class UsuarioRepository {
                 `,
                 [
                   usuario.nome,
-                  'cliente',
+                  "cliente",
                   usuario.email,
                   usuario.senha,
-                  idContato
+                  idContato,
                 ],
                 (error, response) => {
-                  if(error) {
-                    console.error(error)
+                  if (error) {
+                    console.error(error);
                     if (error.message.includes("Duplicate")) {
                       return db.rollback(() => {
                         return resolve({
-                          erro: "E-mail já cadastrado."
-                        })
-                      })
+                          erro: "E-mail já cadastrado.",
+                        });
+                      });
                     } else {
                       return db.rollback(() => {
                         return reject({
-                          erro: "Falha na inclusão do usuário."
-                        })
-                      })
+                          erro: "Falha na inclusão do usuário.",
+                        });
+                      });
                     }
                   } else if (response.affectedRows === 0) {
                     return db.rollback(() => {
                       return resolve({
                         erro: "Usuário não cadastrado.",
-                      })
-                    })
+                      });
+                    });
                   } else {
-                    const token = jsonwebtoken.criaToken({ 
-                      id: response.insertId, 
-                      tipo: "cliente" 
-                    })
+                    const token = jsonwebtoken.criaToken({
+                      id: response.insertId,
+                      tipo: "cliente",
+                    });
                     return db.commit((err) => {
                       if (err) {
                         return db.rollback(() => {
-                          return reject("Falha no Commit")
-                        })
+                          return reject("Falha no Commit");
+                        });
                       } else {
                         return resolve({
                           mensagem: "Usuário cadastrado com sucesso.",
-                          token
-                        })
+                          token,
+                        });
                       }
-                    })
+                    });
                   }
                 }
-              )
+              );
             }
           }
-        )
-      })
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+        );
+      });
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
-  async criarEmpresa(usuario, contato, endereco, informacoes_empresa, dados_bancarios) {
-    if (typeof usuario.senha !== 'string') {
+  async criarEmpresa(
+    usuario,
+    contato,
+    endereco,
+    informacoes_empresa,
+    dados_bancarios
+  ) {
+    if (typeof usuario.senha !== "string") {
       throw new Error("A senha do usuário não é uma string válida.");
     }
     usuario.senha = await crypto.encripto(usuario.senha);
     return await new Promise((resolve, reject) => {
       db.beginTransaction((err) => {
-        if(err) {
-          reject("Ocorreu um erro ao criar a transação.")
-          return
+        if (err) {
+          reject("Ocorreu um erro ao criar a transação.");
+          return;
         }
         return db.execute(
           `
             INSERT INTO contato (email_contato, telefone, nome_contato)
             VALUES (?,?,?);
           `,
-          [
-            contato.email_contato,
-            contato.telefone,
-            contato.nome_contato
-          ],
+          [contato.email_contato, contato.telefone, contato.nome_contato],
           (error, response) => {
-            if(error) {
+            if (error) {
               return db.rollback(() => {
                 return reject({
-                  erro: "Falha na inclusão do contato."
-                })
-              })
+                  erro: "Falha na inclusão do contato.",
+                });
+              });
             } else if (response.affectedRows === 0) {
               return db.rollback(() => {
                 return resolve({
                   erro: "Contato não cadastrado.",
-                })
-              })
+                });
+              });
             } else {
-              const idContato = response.insertId
+              const idContato = response.insertId;
               return db.execute(
                 `
                   INSERT INTO endereco (cep, rua, num, cidade, estado)
@@ -193,24 +191,24 @@ class UsuarioRepository {
                   endereco.rua,
                   endereco.num,
                   endereco.cidade,
-                  endereco.estado
+                  endereco.estado,
                 ],
                 (error, response) => {
-                  if(error) {
-                    console.log(error)
+                  if (error) {
+                    console.log(error);
                     return db.rollback(() => {
                       return reject({
-                        erro: "Falha na inclusão do endereço."
-                      })
-                    })
+                        erro: "Falha na inclusão do endereço.",
+                      });
+                    });
                   } else if (response.affectedRows === 0) {
                     return db.rollback(() => {
                       return resolve({
                         erro: "Endereço não cadastrado.",
-                      })
-                    })
+                      });
+                    });
                   } else {
-                    const idEndereco = response.insertId
+                    const idEndereco = response.insertId;
                     return db.execute(
                       `
                         INSERT INTO informacoes_empresa (cnpj, descricao, link_site, img_perfil)
@@ -220,24 +218,24 @@ class UsuarioRepository {
                         informacoes_empresa.cnpj,
                         informacoes_empresa.descricao,
                         informacoes_empresa.link_site,
-                        informacoes_empresa.img_perfil
+                        informacoes_empresa.img_perfil,
                       ],
                       (error, response) => {
-                        if(error) {
-                          console.log(error)
+                        if (error) {
+                          console.log(error);
                           return db.rollback(() => {
                             return reject({
-                              erro: "Falha na inclusão das informações da empresa."
-                            })
-                          })
+                              erro: "Falha na inclusão das informações da empresa.",
+                            });
+                          });
                         } else if (response.affectedRows === 0) {
                           return db.rollback(() => {
                             return resolve({
                               erro: "Informações da empresa não cadastradas.",
-                            })
-                          })
+                            });
+                          });
                         } else {
-                          const idInfoEmpresa = response.insertId
+                          const idInfoEmpresa = response.insertId;
                           return db.execute(
                             `
                               INSERT INTO dados_bancarios (banco, agencia, digito, tipo_conta, conta)
@@ -248,24 +246,24 @@ class UsuarioRepository {
                               dados_bancarios.agencia,
                               dados_bancarios.digito,
                               dados_bancarios.tipo_conta,
-                              dados_bancarios.conta
+                              dados_bancarios.conta,
                             ],
                             (error, response) => {
-                              if(error) {
-                                console.log(error)
+                              if (error) {
+                                console.log(error);
                                 return db.rollback(() => {
                                   return reject({
-                                    erro: "Falha na inclusão dos dados bancarios."
-                                  })
-                                })
+                                    erro: "Falha na inclusão dos dados bancarios.",
+                                  });
+                                });
                               } else if (response.affectedRows === 0) {
                                 return db.rollback(() => {
                                   return resolve({
                                     erro: "Dados bancarios não cadastrados.",
-                                  })
-                                })
+                                  });
+                                });
                               } else {
-                                const idDadosBanc = response.insertId
+                                const idDadosBanc = response.insertId;
 
                                 return db.execute(
                                   `
@@ -274,72 +272,73 @@ class UsuarioRepository {
                                   `,
                                   [
                                     usuario.nome,
-                                    'empresa',
+                                    "empresa",
                                     usuario.email,
                                     usuario.senha,
                                     idContato,
                                     idEndereco,
                                     idInfoEmpresa,
-                                    idDadosBanc
+                                    idDadosBanc,
                                   ],
                                   (error, response) => {
-                                    if(error) {
+                                    if (error) {
                                       if (error.message.includes("Duplicate")) {
                                         return db.rollback(() => {
                                           return resolve({
-                                            erro: "E-mail já cadastrado."
-                                          })
-                                        })
+                                            erro: "E-mail já cadastrado.",
+                                          });
+                                        });
                                       } else {
                                         return db.rollback(() => {
                                           return reject({
-                                            erro: "Falha na inclusão do usuário."
-                                          })
-                                        })
+                                            erro: "Falha na inclusão do usuário.",
+                                          });
+                                        });
                                       }
                                     } else if (response.affectedRows === 0) {
                                       return db.rollback(() => {
                                         return resolve({
                                           erro: "Usuário não cadastrado.",
-                                        })
-                                      })
+                                        });
+                                      });
                                     } else {
-                                      const token = jsonwebtoken.criaToken({ 
-                                        id: response.insertId, 
-                                        tipo: "empresa" 
-                                      })
+                                      const token = jsonwebtoken.criaToken({
+                                        id: response.insertId,
+                                        tipo: "empresa",
+                                      });
                                       return db.commit((err) => {
                                         if (err) {
                                           return db.rollback(() => {
-                                            return reject("Falha no Commit")
-                                          })
+                                            return reject("Falha no Commit");
+                                          });
                                         } else {
                                           return resolve({
-                                            mensagem: "Usuário cadastrado com sucesso.",
-                                            token
-                                          })
+                                            mensagem:
+                                              "Usuário cadastrado com sucesso.",
+                                            token,
+                                          });
                                         }
-                                      })
+                                      });
                                     }
                                   }
-                                )
+                                );
                               }
                             }
-                          )
+                          );
                         }
                       }
-                    )
+                    );
                   }
-                } 
-              )
+                }
+              );
             }
           }
-        )
-      })
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+        );
+      });
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async deletaUsuario(idUsuario) {
@@ -348,24 +347,22 @@ class UsuarioRepository {
         `
           DELETE FROM usuario WHERE id_usuario = ?;
         `,
-        [
-          idUsuario
-        ],
+        [idUsuario],
         (error, response) => {
           if (error) {
-            console.log(error)
-            return reject({ erro: "Falha ao deletar o usuario." })
+            console.log(error);
+            return reject({ erro: "Falha ao deletar o usuario." });
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Nenhum usuario encontrado." })
+            return resolve({ erro: "Nenhum usuario encontrado." });
           } else {
-            return resolve({ mensagem: "Usuário deletado com sucesso." })
+            return resolve({ mensagem: "Usuário deletado com sucesso." });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarTodosClientes() {
@@ -380,18 +377,18 @@ class UsuarioRepository {
         [],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar todos os clientes." })
+            return reject({ erro: "Falha ao listar todos os clientes." });
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum usuario encontrado." })
+            return resolve({ mensagem: "Nenhum usuario encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarTodasEmpresas() {
@@ -407,20 +404,20 @@ class UsuarioRepository {
         `,
         [],
         (error, response) => {
-          console.log(response)
+          console.log(response);
           if (error) {
-            return reject({ erro: "Falha ao listar as empresas." })
+            return reject({ erro: "Falha ao listar as empresas." });
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum empresa encontrado." })
+            return resolve({ mensagem: "Nenhum empresa encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarClientePorId(idUsuario) {
@@ -431,24 +428,22 @@ class UsuarioRepository {
           INNER JOIN contato c ON u.id_contato = c.id_contato
           WHERE u.id_usuario = ? AND u.tipo LIKE "cliente";
         `,
-        [
-          idUsuario
-        ],
+        [idUsuario],
         (error, response) => {
           if (error) {
-            console.log(error)
-            return reject({ erro: "Falha ao listar o cliente." })
+            console.log(error);
+            return reject({ erro: "Falha ao listar o cliente." });
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhum cliente encontrado." })
+            return resolve({ mensagem: "Nenhum cliente encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarEmpresaPorId(idUsuario) {
@@ -462,23 +457,21 @@ class UsuarioRepository {
           INNER JOIN dados_bancarios db ON u.id_dados_bancarios = db.id_dados_bancarios
           WHERE u.id_usuario = ? AND u.tipo LIKE "empresa";
         `,
-        [
-          idUsuario
-        ],
+        [idUsuario],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar a empresa." })
+            return reject({ erro: "Falha ao listar a empresa." });
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhuma empresa encontrada." })
+            return resolve({ mensagem: "Nenhuma empresa encontrada." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarEmpresaPorIdComBanco(idUsuario) {
@@ -492,27 +485,25 @@ class UsuarioRepository {
           INNER JOIN dados_bancarios db ON u.id_dados_bancarios = db.id_dados_bancarios
           WHERE u.id_usuario = ?;
         `,
-        [
-          idUsuario
-        ],
+        [idUsuario],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar a empresa." })
+            return reject({ erro: "Falha ao listar a empresa." });
           } else if (!response.length) {
-            return resolve({ mensagem: "Nenhuma empresa encontrada." })
+            return resolve({ mensagem: "Nenhuma empresa encontrada." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async atualizarContato(idUsuario, contato) {
-    return await new Promise((resolve,reject) => {
+    return await new Promise((resolve, reject) => {
       this.db.query(
         `
           UPDATE contato c
@@ -524,26 +515,28 @@ class UsuarioRepository {
           contato.email_contato,
           contato.telefone,
           contato.nome_contato,
-          idUsuario
+          idUsuario,
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao atualizar o contato do usuario." })
+            return reject({ erro: "Falha ao atualizar o contato do usuario." });
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Nenhum usuario encontrado." })
+            return resolve({ erro: "Nenhum usuario encontrado." });
           } else {
-            return resolve({ mensagem: "Dados de contato atualizados com sucesso." })
+            return resolve({
+              mensagem: "Dados de contato atualizados com sucesso.",
+            });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async atualizarEndereco(idUsuario, endereco) {
-    return await new Promise((resolve,reject) => {
+    return await new Promise((resolve, reject) => {
       this.db.query(
         `
           UPDATE endereco e
@@ -557,26 +550,30 @@ class UsuarioRepository {
           endereco.num,
           endereco.cidade,
           endereco.estado,
-          idUsuario
+          idUsuario,
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao atualizar o contato do usuario." })
+            return reject({ erro: "Falha ao atualizar o contato do usuario." });
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Dados de endereço deste usuário, não encontrados." })
+            return resolve({
+              erro: "Dados de endereço deste usuário, não encontrados.",
+            });
           } else {
-            return resolve({ mensagem: "Dados de endereço atualizados com sucesso." })
+            return resolve({
+              mensagem: "Dados de endereço atualizados com sucesso.",
+            });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async atualizarInformacoesEmpresa(idUsuario, informacoes_empresa) {
-    return await new Promise((resolve,reject) => {
+    return await new Promise((resolve, reject) => {
       this.db.query(
         `
           UPDATE informacoes_empresa ie
@@ -589,26 +586,32 @@ class UsuarioRepository {
           informacoes_empresa.descricao,
           informacoes_empresa.link_site,
           informacoes_empresa.img_perfil,
-          idUsuario
+          idUsuario,
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao atualizar o informações de empresa do usuario." })
+            return reject({
+              erro: "Falha ao atualizar o informações de empresa do usuario.",
+            });
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Dados da empresa deste usuário, não encontrados." })
+            return resolve({
+              erro: "Dados da empresa deste usuário, não encontrados.",
+            });
           } else {
-            return resolve({ mensagem: "Dados da empresa atualizados com sucesso." })
+            return resolve({
+              mensagem: "Dados da empresa atualizados com sucesso.",
+            });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async atualizarDadosBancarios(idUsuario, dados_bancarios) {
-    return await new Promise((resolve,reject) => {
+    return await new Promise((resolve, reject) => {
       this.db.query(
         `
           UPDATE dados_bancarios db
@@ -622,23 +625,29 @@ class UsuarioRepository {
           dados_bancarios.digito,
           dados_bancarios.tipo_conta,
           dados_bancarios.conta,
-          idUsuario
+          idUsuario,
         ],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao atualizar os dados bancarios do usuario." })
+            return reject({
+              erro: "Falha ao atualizar os dados bancarios do usuario.",
+            });
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Dados bancarios deste usuário, não encontrados." })
+            return resolve({
+              erro: "Dados bancarios deste usuário, não encontrados.",
+            });
           } else {
-            return resolve({ mensagem: "Dados da bancarios atualizados com sucesso." })
+            return resolve({
+              mensagem: "Dados da bancarios atualizados com sucesso.",
+            });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 }
 
-module.exports = UsuarioRepository
+module.exports = UsuarioRepository;
