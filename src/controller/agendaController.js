@@ -56,7 +56,7 @@ class AgendaController {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
       }
 
-      const { idAgenda } = req.params
+      const { idAgenda } = req.query
 
       if (!idAgenda) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
@@ -92,7 +92,7 @@ class AgendaController {
 
   async listarAgendaPorIdAgenda(req, res) {
     try {
-      const { idAgenda } = req.params
+      const { idAgenda } = req.query
 
       if (!idAgenda) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
@@ -113,7 +113,7 @@ class AgendaController {
 
   async listarTodasAgendasPorIdEmpresa(req, res) {
     try {
-      const { idEmpresa } = req.params
+      const { idEmpresa } = req.query
 
       if (!idEmpresa) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
@@ -134,7 +134,7 @@ class AgendaController {
 
   async listarAgendasPorNome(req, res) {
     try {
-      const { nome } = req.params
+      const { nome } = req.query
 
       if (!nome) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
@@ -155,7 +155,7 @@ class AgendaController {
 
   async listarAgendasPorServico(req, res) {
     try {
-      const { servico } = req.params
+      const { servico } = req.query
 
       if (!servico) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })
@@ -176,7 +176,7 @@ class AgendaController {
 
   async listarAgendasPorNomeEmpresa(req, res) {
     try {
-      const { nomeEmpresa } = req.params
+      const { nomeEmpresa } = req.query
 
       if (!nomeEmpresa) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." })

@@ -9,7 +9,6 @@ class UsuarioRepository {
   }
 
   async autenticarUsuario(email, senha) {
-    console.log("teste")
     return await new Promise((resolve, reject) => {
       this.db.query(
         `

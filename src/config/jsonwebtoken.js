@@ -1,3 +1,5 @@
+/*DOTENV*/ require('dotenv').config()
+
 const jwt = require('jsonwebtoken')
 
 function criaToken(dados) {

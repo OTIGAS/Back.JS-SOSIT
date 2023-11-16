@@ -15,8 +15,8 @@ router.delete('/usuario/deleta', verificaToken, usuarioController.deletaUsuario)
 
 router.get('/usuario/listar-meu-perfil', verificaToken, usuarioController.listarMeuPerfil) //Listar Por Token
 
-router.get('/usuario/listar-todos/:tipo', usuarioController.listarTodosUsuarios) //Listar Todos Usuários
-router.get('/usuario/listar-por-id/:idUsuario/:tipo', usuarioController.listarUsuarioPorId) //Listar Por ID
+router.get('/usuario/listar-todos', usuarioController.listarTodosUsuarios) //Listar Todos Usuários
+router.get('/usuario/listar-por-id', usuarioController.listarUsuarioPorId) //Listar Por ID
 
 router.patch('/usuario/atualizar-contato', verificaToken, usuarioController.atualizarContato) //Atualizar Contato
 router.patch('/usuario/atualizar-endereco', verificaToken, usuarioController.atualizarEndereco) //Atualizar Endereco
