@@ -1,3 +1,5 @@
+/*DOTENV*/ require('dotenv').config()
+
 const crypto = require('crypto')
 
 const algorithm = process.env.ALGORITHM_CRYPTO
@@ -19,7 +21,6 @@ async function encripto(value) {
 }
 
 async function decripto(crypted) {
-
   try {
     const [iv, encrypted] = crypted.split(":");
     const ivBuffer = Buffer.from(iv, "hex");

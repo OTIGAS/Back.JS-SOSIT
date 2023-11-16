@@ -3,8 +3,6 @@ const compromissoRepository = new Compromisso();
 
 class CompromissoController {
   async criarCompromisso(req, res) {
-    const date = new Date().toLocaleDateString("pt-BR");
-    const time = new Date().toLocaleTimeString("pt-BR");
     try {
       const idUsuario = req.user.id;
 
@@ -12,25 +10,38 @@ class CompromissoController {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
-      const { data } = req.body;
+      const { idAgenda, data, horario } = req.body;
 
-      const { email, senha } = data;
-
-      if (!email || !senha) {
+      if (!idAgenda || !data || !horario) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
-      const response = await usuarioRepository.criarCompromisso(email, senha);
+      const response = await compromissoRepository.criarCompromisso(idUsuario, idAgenda, data, horario);
 
       if (response.erro) {
         return res.status(400).send(response);
       } else {
         return res.status(200).send(response);
       }
-      console.log(response, date, time);
     } catch (error) {
       console.log(error);
       return res.status(500).send({ erro: "Erro interno do server" });
     }
   }
+
+   async deletarCompromisso(req, res) {
+    try {
+      const { idDeletar } = req.query
+
+      if (!idDeletar) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
+      }
+
+      const response = await usuarioRepository.criarCompromisso(email, senha);
+    } catch (error) {
+      
+    }
+   }
 }
+
+module.exports = CompromissoController;
