@@ -35,27 +35,27 @@ class ComrpomissoRepository {
         `
           DELETE FROM compromisso WHERE id_compromisso = ?;
         `,
-        [
-          idCompromisso
-        ],
+        [idCompromisso],
         (error, response) => {
           if (error) {
             if (error.message.includes("foreign key")) {
-              return resolve({ erro: "Compromisso esta sendo usanda como chave estrangeira." })
+              return resolve({
+                erro: "Compromisso esta sendo usanda como chave estrangeira.",
+              });
             } else {
-              return reject({ erro: "Falha ao deletar o compromisso." })
+              return reject({ erro: "Falha ao deletar o compromisso." });
             }
           } else if (response.affectedRows === 0) {
-            return resolve({ erro: "Compromisso não encontrado." })
+            return resolve({ erro: "Compromisso não encontrado." });
           } else {
-            return resolve({ mensagem: "Compromisso deletado com sucesso." })
+            return resolve({ mensagem: "Compromisso deletado com sucesso." });
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarTodosCompromissos() {
@@ -67,18 +67,18 @@ class ComrpomissoRepository {
         [],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar todos os compromissos." })
+            return reject({ erro: "Falha ao listar todos os compromissos." });
           } else if (!response.length) {
-            return resolve({ erro: "Nenhum compromisso encontrado." })
+            return resolve({ erro: "Nenhum compromisso encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarCompromissoPorID(idCompromisso) {
@@ -90,18 +90,18 @@ class ComrpomissoRepository {
         [idCompromisso],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar o compromisso." })
+            return reject({ erro: "Falha ao listar o compromisso." });
           } else if (!response.length) {
-            return resolve({ erro: "Compromisso não encontrado." })
+            return resolve({ erro: "Compromisso não encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 
   async listarCompromissoPorIdAgendaIdUsuario(idAgenda, idUsuario) {
@@ -113,18 +113,18 @@ class ComrpomissoRepository {
         [idAgenda, idUsuario],
         (error, response) => {
           if (error) {
-            return reject({ erro: "Falha ao listar o compromisso." })
+            return reject({ erro: "Falha ao listar o compromisso." });
           } else if (!response.length) {
-            return resolve({ erro: "Compromisso não encontrado." })
+            return resolve({ erro: "Compromisso não encontrado." });
           } else {
-            return resolve(response)
+            return resolve(response);
           }
         }
-      )
-    }).catch(error => {
-      console.log(error)
-      throw new Error(error)
-    })
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
   }
 }
 

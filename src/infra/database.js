@@ -1,6 +1,6 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const mysql = require("mysql2")
+const mysql = require("mysql2");
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -9,15 +9,15 @@ const db = mysql.createConnection({
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
   multipleStatements: true,
-  charset: 'utf8mb4',
-})
+  charset: "utf8mb4",
+});
 
 db.connect((erro) => {
   if (erro) {
-    throw erro
+    throw erro;
   }
-  console.log(`Conectado com o banco de dados [${process.env.DB_NAME}]`)
-})
+  console.log(`Conectado com o banco de dados [${process.env.DB_NAME}]`);
+});
 
-global.db = db
-module.exports = db
+global.db = db;
+module.exports = db;

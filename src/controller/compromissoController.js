@@ -16,7 +16,12 @@ class CompromissoController {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
-      const response = await compromissoRepository.criarCompromisso(idUsuario, idAgenda, data, horario);
+      const response = await compromissoRepository.criarCompromisso(
+        idUsuario,
+        idAgenda,
+        data,
+        horario
+      );
 
       if (response.erro) {
         return res.status(400).send(response);
@@ -29,19 +34,17 @@ class CompromissoController {
     }
   }
 
-   async deletarCompromisso(req, res) {
+  async deletarCompromisso(req, res) {
     try {
-      const { idDeletar } = req.query
+      const { idDeletar } = req.query;
 
       if (!idDeletar) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
       const response = await usuarioRepository.criarCompromisso(email, senha);
-    } catch (error) {
-      
-    }
-   }
+    } catch (error) {}
+  }
 }
 
 module.exports = CompromissoController;
