@@ -10,6 +10,7 @@ MySQL Workbench: https://www.mysql.com/products/workbench/
 
 ### 1. Clone do Projeto
 Faça o clone deste repositório do GitHub em sua máquina local utilizando o seguinte comando:
+
 git clone https://github.com/OTIGAS/Back.JS-SOSIT.git
 
 ### 2. Banco de Dados
@@ -20,10 +21,12 @@ Certifique-se de que o arquivo .env esteja configurado corretamente, contendo as
 
 ### 4. Instalação de Dependências
 No terminal, navegue até o diretório do projeto e execute o seguinte comando para instalar as dependências:
+
 npm install
 
 ## Execução do Projeto
 Após a conclusão da configuração inicial, execute o seguinte comando para iniciar o servidor de desenvolvimento:
+
 npm run dev
 
 O backend estará acessível em http://localhost:PORT.
