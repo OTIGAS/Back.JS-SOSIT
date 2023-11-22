@@ -318,16 +318,17 @@ class UsuarioRepository {
                 if (error) {
                   return reject({ erro: "Falha ao listar a agenda." });
                 } else if (!response.length) {
+                  const horarios = [];
                   switch (diaSemana) {
                     case 0:
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_dom.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -335,11 +336,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_seg.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -347,11 +348,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_ter.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -359,11 +360,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_qua.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -371,11 +372,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_qui.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -383,11 +384,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_sex.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -395,11 +396,11 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_sab.map((horario) => {
-                          return {
+                          horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
-                          };
+                          });
                         }),
                       });
                       break;
@@ -407,16 +408,29 @@ class UsuarioRepository {
                       return reject({ erro: "Falha ao listar a agenda." });
                   }
                 } else {
+                  const horarios = [];
                   switch (diaSemana) {
                     case 0:
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_dom.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -424,11 +438,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_seg.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -436,11 +462,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_ter.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -448,11 +486,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_qua.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -460,11 +510,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_qui.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -472,11 +534,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_sex.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -484,11 +558,23 @@ class UsuarioRepository {
                       return resolve({
                         id_agenda: idAgenda,
                         horarios: dadosAgenda.horarios_sab.map((horario) => {
-                          return {
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          };
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) | response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
                         }),
                       });
                       break;
@@ -506,6 +592,7 @@ class UsuarioRepository {
       throw new Error(error);
     });
   }
+  
 }
 
 module.exports = UsuarioRepository;

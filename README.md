@@ -14,7 +14,7 @@ Faça o clone deste repositório do GitHub em sua máquina local utilizando o se
 git clone https://github.com/OTIGAS/Back.JS-SOSIT.git
 
 ### 2. Banco de Dados
-Execute o dump do banco de dados localizado na pasta "banco".
+Execute o dump do banco de dados localizado na pasta "dump".
 
 ### 3. Configuração do Ambiente
 Certifique-se de que o arquivo .env esteja configurado corretamente, contendo as informações necessárias para a conexão com o banco de dados e outras variáveis de ambiente.
