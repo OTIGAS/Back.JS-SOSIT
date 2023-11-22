@@ -124,14 +124,6 @@ BEGIN
     SET informacoes_empresa_id = (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = OLD.id_usuario);
     SET dados_bancarios_id = (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = OLD.id_usuario);
     
-    INSERT IGNORE INTO logs_delete (id_contato, id_endereco, id_informacoes_empresa, id_dados_bancarios, id_usuario) 
-		VALUES (
-        (SELECT id_contato FROM usuario WHERE id_usuario = OLD.id_usuario), 
-        (SELECT id_endereco FROM usuario WHERE id_usuario = OLD.id_usuario), 
-        (SELECT id_informacoes_empresa FROM usuario WHERE id_usuario = OLD.id_usuario), 
-        (SELECT id_dados_bancarios FROM usuario WHERE id_usuario = OLD.id_usuario), 
-        OLD.id_usuario);
-    
     CALL deleta_dados_usuario(contato_id, endereco_id, informacoes_empresa_id, dados_bancarios_id);
 END;
 //
