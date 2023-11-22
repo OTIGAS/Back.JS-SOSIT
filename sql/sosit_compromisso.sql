@@ -27,7 +27,8 @@ CREATE TABLE `compromisso` (
   `id_agenda` int NOT NULL,
   `id_usuario` int NOT NULL,
   `data_completa` date DEFAULT NULL,
-  `horario` time DEFAULT NULL,
+  `horario_inicio` time DEFAULT NULL,
+  `horario_fim` time DEFAULT NULL,
   PRIMARY KEY (`id_compromisso`),
   KEY `id_agenda` (`id_agenda`),
   KEY `id_usuario` (`id_usuario`),
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-22  7:57:42
+-- Dump completed on 2023-11-22 11:36:56

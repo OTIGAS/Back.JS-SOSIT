@@ -6,6 +6,8 @@ const morgan = require("morgan");
 
 const app = express();
 
+console.log(new Date().getDay())
+
 app.use(express.json());
 
 const corsOptions = {
