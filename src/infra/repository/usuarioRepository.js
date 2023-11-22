@@ -30,6 +30,7 @@ class UsuarioRepository {
                 id: response[0].id_usuario,
                 tipo: response[0].tipo,
               });
+              console.log("A")
 
               return resolve({
                 mensagem: "Usuário autenticado com sucesso.",
@@ -423,16 +424,17 @@ class UsuarioRepository {
     return await new Promise((resolve, reject) => {
       this.db.query(
         `
-          SELECT u.id_usuario, u.nome, u.tipo, c.* FROM usuario u
+          SELECT u.id_usuario, u.nome, u.email, u.tipo, c.* FROM usuario u
           INNER JOIN contato c ON u.id_contato = c.id_contato
           WHERE u.id_usuario = ? AND u.tipo LIKE "cliente";
         `,
         [idUsuario],
-        (error, response) => {
+        (error, [response]) => {
+          console.log(response)
           if (error) {
             console.log(error);
             return reject({ erro: "Falha ao listar o cliente." });
-          } else if (!response.length) {
+          } else if (!response) {
             return resolve({ mensagem: "Nenhum cliente encontrado." });
           } else {
             return resolve(response);
@@ -449,7 +451,7 @@ class UsuarioRepository {
     return await new Promise((resolve, reject) => {
       this.db.query(
         `
-          SELECT u.id_usuario, u.nome, u.tipo, c.*, e.*, ie.* FROM usuario u
+          SELECT u.id_usuario, u.nome, u.email, u.tipo, c.*, e.*, ie.* FROM usuario u
           INNER JOIN contato c ON u.id_contato = c.id_contato
           INNER JOIN endereco e ON u.id_endereco = e.id_endereco
           INNER JOIN informacoes_empresa ie ON u.id_informacoes_empresa = ie.id_informacoes_empresa
@@ -477,7 +479,7 @@ class UsuarioRepository {
     return await new Promise((resolve, reject) => {
       this.db.query(
         `
-          SELECT u.id_usuario, u.nome, u.tipo, c.*, e.*, ie.*, db.* FROM usuario u
+          SELECT u.id_usuario, u.nome, u.email, u.tipo, c.*, e.*, ie.*, db.* FROM usuario u
           INNER JOIN contato c ON u.id_contato = c.id_contato
           INNER JOIN endereco e ON u.id_endereco = e.id_endereco
           INNER JOIN informacoes_empresa ie ON u.id_informacoes_empresa = ie.id_informacoes_empresa
@@ -485,13 +487,44 @@ class UsuarioRepository {
           WHERE u.id_usuario = ?;
         `,
         [idUsuario],
-        (error, response) => {
+        (error, [response]) => {
           if (error) {
             return reject({ erro: "Falha ao listar a empresa." });
-          } else if (!response.length) {
+          } else if (!response) {
             return resolve({ mensagem: "Nenhuma empresa encontrada." });
           } else {
             return resolve(response);
+          }
+        }
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
+  }
+
+  async atualizarUsuario(idUsuario, usuario) {
+    return await new Promise((resolve, reject) => {
+      this.db.query(
+        `
+          UPDATE usuario u
+          SET u.nome = ?, u.email = ?
+          WHERE u.id_usuario = ?;
+        `,
+        [
+          usuario.nome,
+          usuario.email,
+          idUsuario,
+        ],
+        (error, response) => {
+          if (error) {
+            return reject({ erro: "Falha ao atualizar o contato do usuario." });
+          } else if (response.affectedRows === 0) {
+            return resolve({ erro: "Nenhum usuario encontrado." });
+          } else {
+            return resolve({
+              mensagem: "Dados do usuário atualizados com sucesso.",
+            });
           }
         }
       );

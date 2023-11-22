@@ -65,7 +65,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, c.email_contato, c.telefone, e.cep, e.rua, e.num, e.cidade, e.estado,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN contato c ON u.id_contato = c.id_contato
@@ -95,7 +95,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, e.cep, e.rua, e.num, e.cidade, e.estado, c.email_contato, c.telefone,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN contato c ON u.id_contato = c.id_contato
@@ -126,7 +126,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, e.cep, e.rua, e.num, e.cidade, e.estado,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN endereco e ON u.id_endereco = e.id_endereco
@@ -156,7 +156,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, e.cep, e.rua, e.num, e.cidade, e.estado, c.email_contato, c.telefone,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN contato c ON u.id_contato = c.id_contato
@@ -187,7 +187,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, e.cep, e.rua, e.num, e.cidade, e.estado, c.email_contato, c.telefone,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN contato c ON u.id_contato = c.id_contato
@@ -218,7 +218,7 @@ class UsuarioRepository {
           SELECT 
             a.id_agenda, a.nome, a.servico, a.descricao, 
             u.id_usuario, u.nome as nome_empresa, e.cep, e.rua, e.num, e.cidade, e.estado, c.email_contato, c.telefone,
-            a.horarios_seg, a.horarios_ter, a.horarios_qua, a.horarios_qui, a.horarios_sex, a.horarios_sab, a.horarios_dom
+            a.horarios_seg as seg, a.horarios_ter as ter, a.horarios_qua as qua, a.horarios_qui as qui, a.horarios_sex as sex, a.horarios_sab as sab, a.horarios_dom as dom
           FROM agenda a
           INNER JOIN usuario u ON a.id_usuario = u.id_usuario
           INNER JOIN contato c ON u.id_contato = c.id_contato
@@ -287,6 +287,248 @@ class UsuarioRepository {
             return resolve({
               mensagem: "Horários da Agenda atualizados com sucesso.",
             });
+          }
+        }
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
+  }
+
+  async listarHorariosDiaAgenda(idAgenda, dataCompleta) {
+    const diasDaSemana = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+    ];
+    const diaDaSemanaNumero = new Date(dataCompleta).getDay();
+    return await new Promise((resolve, reject) => {
+      this.db.query(
+        `
+          SELECT * FROM agenda WHERE id_agenda = ?
+        `,
+        [idAgenda, dataCompleta],
+        (error, response) => {
+          if (error) {
+            return reject({ erro: "Falha ao listar a agenda." });
+          } else {
+            const horariosDom = response[0].horarios_dom
+            const horariosSeg = response[0].horarios_seg
+            const horariosTer = response[0].horarios_ter
+            const horariosQua = response[0].horarios_qua
+            const horariosQui = response[0].horarios_qui
+            const horariosSex = response[0].horarios_sex
+            const horariosSab = response[0].horarios_sab
+            this.db.query(
+              `
+                SELECT * FROM compromisso WHERE id_agenda = ? AND data_completa = ?
+              `,
+              [idAgenda, dataCompleta],
+              (error, response) => {
+                if (error) {
+                  return reject({ erro: "Falha ao listar a agenda." });
+                } else if (!response.length) {
+                  if(diasDaSemana[diaDaSemanaNumero] === "Domingo") {
+                    return horariosDom.map((horarioDom) => {
+                      return {
+                        horairoInicio: horariosDom.inicio,
+                        horarioFim: horariosDom.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Segunda-feira") {
+                    return horariosSeg.map((horarioSeg) => {
+                      return {
+                        horairoInicio: horariosSeg.inicio,
+                        horarioFim: horariosSeg.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Terça-feira") {
+                    return horariosTer.map((horarioTer) => {
+                      return {
+                        horairoInicio: horariosTer.inicio,
+                        horarioFim: horariosTer.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Quarta-feira") {
+                    return horariosQua.map((horarioQua) => {
+                      return {
+                        horairoInicio: horariosQua.inicio,
+                        horarioFim: horariosQua.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Quinta-feira") {
+                    return horariosQui.map((horarioQui) => {
+                      return {
+                        horairoInicio: horariosQui.inicio,
+                        horarioFim: horariosQui.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Sexta-feira") {
+                    return horariosSex.map((horarioSex) => {
+                      return {
+                        horairoInicio: horariosSex.inicio,
+                        horarioFim: horariosSex.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Domingo") {
+                    return horariosSab.map((horarioSab) => {
+                      return {
+                        horairoInicio: horariosSab.inicio,
+                        horarioFim: horariosSab.fim,
+                        disponivel: true,
+                        idAgenda: idAgenda
+                      }
+                    })
+                  }
+                } else {
+                  if(diasDaSemana[diaDaSemanaNumero] === "Domingo") {
+                    return horariosDom.map((horarioDom) => {
+                      if(response[0].horario.includes(horarioDom.inicio) | response[0].horario.includes(horarioDom.fim)) {
+                        return {
+                          horairoInicio: horarioDom.inicio,
+                          horarioFim: horarioDom.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioDom.inicio,
+                          horarioFim: horarioDom.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Segunda-feira") {
+                    return horariosSeg.map((horarioSeg) => {
+                      if(response[0].horario.includes(horarioSeg.inicio) | response[0].horario.includes(horarioSeg.fim)) {
+                        return {
+                          horairoInicio: horarioSeg.inicio,
+                          horarioFim: horarioSeg.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioSeg.inicio,
+                          horarioFim: horarioSeg.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Terça-feira") {
+                    return horariosTer.map((horarioTer) => {
+                      if(response[0].horario.includes(horarioTer.inicio) | response[0].horario.includes(horarioTer.fim)) {
+                        return {
+                          horairoInicio: horarioTer.inicio,
+                          horarioFim: horarioTer.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioTer.inicio,
+                          horarioFim: horarioTer.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Quarta-feira") {
+                    return horariosQua.map((horarioQua) => {
+                      console.log(horario)
+                      if(response[0].horario.includes(horarioQua.inicio) | response[0].horario.includes(horarioQua.fim)) {
+                        return {
+                          horairoInicio: horarioQua.inicio,
+                          horarioFim: horarioQua.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioQua.inicio,
+                          horarioFim: horarioQua.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Quinta-feira") {
+                    return horariosQui.map((horarioQui) => {
+                      if(response[0].horario.includes(horarioQui.inicio) | response[0].horario.includes(horarioQui.fim)) {
+                        return {
+                          horairoInicio: horarioQui.inicio,
+                          horarioFim: horarioQui.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioQui.inicio,
+                          horarioFim: horarioQui.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Sexta-feira") {
+                    return horariosSex.map((horarioSex) => {
+                      if(response[0].horario.includes(horarioSex.inicio) | response[0].horario.includes(horarioSex.fim)) {
+                        return {
+                          horairoInicio: horarioSex.inicio,
+                          horarioFim: horarioSex.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioSex.inicio,
+                          horarioFim: horarioSex.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  } else if(diasDaSemana[diaDaSemanaNumero] === "Domingo") {
+                    return horariosSab.map((horarioSab) => {
+                      if(response[0].horario.includes(horarioSab.inicio) | response[0].horario.includes(horarioSab.fim)) {
+                        return {
+                          horairoInicio: horarioSab.inicio,
+                          horarioFim: horarioSab.fim,
+                          disponivel: false,
+                          idAgenda: idAgenda
+                        }
+                      } else {
+                        return {
+                          horairoInicio: horarioSab.inicio,
+                          horarioFim: horarioSab.fim,
+                          disponivel: true,
+                          idAgenda: idAgenda
+                        }
+                      }
+                    })
+                  }
+                }
+              }
+            );
           }
         }
       );

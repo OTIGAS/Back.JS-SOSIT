@@ -16,6 +16,8 @@ router.delete(
 
 router.get("/agenda/listar-todas", agendaController.listarTodasAgendas); //Listar Todas as Agendas
 
+router.post("/agenda/listar-por-dia", agendaController.listarHorariosDiaAgenda); //Listar Todas as Agendas
+
 router.get(
   "/agenda/listar-todas-por-token",
   verificaToken,

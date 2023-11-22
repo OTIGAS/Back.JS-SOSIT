@@ -254,6 +254,42 @@ class UsuarioController {
     }
   }
 
+  async atualizarUsuario(req, res) {
+    try {
+      const idUsuario = req.user.id;
+
+      if (!idUsuario) {
+        return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
+      }
+
+      const { usuario } = req.body;
+
+      if (
+        !usuario ||
+        !usuario.nome ||
+        !usuario.email
+      ) {
+        return res
+          .status(400)
+          .send({ erro: "Parâmetro(s) do Usuário ausente(s)." });
+      }
+
+      const response = await usuarioRepository.atualizarUsuario(
+        idUsuario,
+        usuario
+      );
+
+      if (response.erro) {
+        return res.status(400).send(response);
+      } else {
+        return res.status(200).send(response);
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({ erro: "Erro interno do server" });
+    }
+  }
+
   async atualizarContato(req, res) {
     try {
       const idUsuario = req.user.id;
@@ -265,6 +301,7 @@ class UsuarioController {
       const { contato } = req.body;
 
       if (
+        !contato ||
         !contato.email_contato ||
         !contato.telefone ||
         !contato.nome_contato
@@ -301,6 +338,7 @@ class UsuarioController {
       const { endereco } = req.body;
 
       if (
+        !endereco ||
         !endereco.cep ||
         !endereco.rua ||
         !endereco.num ||
@@ -339,6 +377,7 @@ class UsuarioController {
       const { informacoes_empresa } = req.body;
 
       if (
+        !informacoes_empresa ||
         !informacoes_empresa.cnpj ||
         !informacoes_empresa.descricao ||
         !informacoes_empresa.link_site ||
@@ -376,6 +415,7 @@ class UsuarioController {
       const { dados_bancarios } = req.body;
 
       if (
+        !dados_bancarios ||
         !dados_bancarios.banco ||
         !dados_bancarios.agencia ||
         !dados_bancarios.digito ||

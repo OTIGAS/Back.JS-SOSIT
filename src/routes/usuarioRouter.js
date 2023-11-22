@@ -27,6 +27,11 @@ router.get("/usuario/listar-todos", usuarioController.listarTodosUsuarios); //Li
 router.get("/usuario/listar-por-id", usuarioController.listarUsuarioPorId); //Listar Por ID
 
 router.patch(
+  "/usuario/atualizar-usuario",
+  verificaToken,
+  usuarioController.atualizarUsuario
+); //Atualizar Usuario
+router.patch(
   "/usuario/atualizar-contato",
   verificaToken,
   usuarioController.atualizarContato

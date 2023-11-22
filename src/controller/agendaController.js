@@ -56,7 +56,7 @@ class AgendaController {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
-      const { idAgenda } = req.query;
+      const { idAgenda } = req.params;
 
       if (!idAgenda) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
@@ -93,9 +93,29 @@ class AgendaController {
     }
   }
 
+  async listarHorariosDiaAgenda(req, res) {
+    try {
+      const { idAgenda, dataCompleta } = req.body;
+
+      const response = await agendaRepository.listarHorariosDiaAgenda(
+        idAgenda,
+        dataCompleta
+      );
+
+      if (response.erro) {
+        return res.status(400).send(response);
+      } else {
+        return res.status(200).send(response);
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({ error: "Erro interno do server" });
+    }
+  }
+
   async listarAgendaPorIdAgenda(req, res) {
     try {
-      const { idAgenda } = req.query;
+      const { idAgenda } = req.params;
 
       if (!idAgenda) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
@@ -116,7 +136,7 @@ class AgendaController {
 
   async listarTodasAgendasPorIdEmpresa(req, res) {
     try {
-      const { idEmpresa } = req.query;
+      const { idEmpresa } = req.params;
 
       if (!idEmpresa) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
@@ -139,7 +159,7 @@ class AgendaController {
 
   async listarAgendasPorNome(req, res) {
     try {
-      const { nome } = req.query;
+      const { nome } = req.params;
 
       if (!nome) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
@@ -160,7 +180,7 @@ class AgendaController {
 
   async listarAgendasPorServico(req, res) {
     try {
-      const { servico } = req.query;
+      const { servico } = req.params;
 
       if (!servico) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
@@ -181,7 +201,7 @@ class AgendaController {
 
   async listarAgendasPorNomeEmpresa(req, res) {
     try {
-      const { nomeEmpresa } = req.query;
+      const { nomeEmpresa } = req.params;
 
       if (!nomeEmpresa) {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });

@@ -7,6 +7,7 @@ function criaToken(dados) {
 }
 
 function verificaJWT(token) {
+  console.log(token)
   return jwt.verify(
     token,
     process.env.PALAVRA_CHAVE_TOKEN,
