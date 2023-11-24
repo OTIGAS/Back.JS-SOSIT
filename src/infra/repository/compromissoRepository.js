@@ -5,14 +5,14 @@ class ComrpomissoRepository {
     this.db = db;
   }
 
-  async criarCompromisso(idUsuario, idAgenda, data, horario) {
+  async criarCompromisso(idUsuario, idAgenda, data, horario_inicio, horario_fim) {
     return await new Promise((resolve, reject) => {
       this.db.query(
         `
-          INSERT INTO compromisso (id_agenda, id_usuario, data_completa, horario) 
-            VALUES (?,?,?,?)
+          INSERT INTO compromisso (id_agenda, id_usuario, data_completa, horario_inicio, horario_fim) 
+            VALUES (?,?,?,?,?)
         `,
-        [idAgenda, idUsuario, data, horario],
+        [idAgenda, idUsuario, data, horario_inicio, horario_fim],
         (error, response) => {
           if (error) {
             return reject({ erro: "Falha na inclusão do compromisso." });
