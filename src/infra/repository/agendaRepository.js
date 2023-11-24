@@ -320,89 +320,145 @@ class UsuarioRepository {
                 } else if (!response.length) {
                   const horarios = [];
                   switch (diaSemana) {
-                    case 0:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_dom.map((horario) => {
+                    case 6:
+                      if (!dadosAgenda.horarios_dom) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_dom.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
+                      break;
+                    case 0:
+                      if (!dadosAgenda.horarios_seg) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_seg.map((horario) => {
+                          horarios.push({
+                            inicio: horario.inicio,
+                            fim: horario.fim,
+                            disponivel: true,
+                          });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 1:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_seg.map((horario) => {
+                      if (!dadosAgenda.horarios_ter) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_ter.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 2:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_ter.map((horario) => {
+                      if (!dadosAgenda.horarios_qua) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_qua.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 3:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_qua.map((horario) => {
+                      if (!dadosAgenda.horarios_qui) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_qui.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 4:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_qui.map((horario) => {
+                      if (!dadosAgenda.horarios_sex) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_sex.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 5:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_sex.map((horario) => {
+                      if (!dadosAgenda.horarios_sab) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_sab.map((horario) => {
                           horarios.push({
                             inicio: horario.inicio,
                             fim: horario.fim,
                             disponivel: true,
                           });
-                        }),
-                      });
-                      break;
-                    case 6:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_sab.map((horario) => {
-                          horarios.push({
-                            inicio: horario.inicio,
-                            fim: horario.fim,
-                            disponivel: true,
-                          });
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     default:
                       return reject({ erro: "Falha ao listar a agenda." });
@@ -410,14 +466,19 @@ class UsuarioRepository {
                 } else {
                   const horarios = [];
                   switch (diaSemana) {
-                    case 0:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_dom.map((horario) => {
+                    case 6:
+                      if (!dadosAgenda.horarios_dom) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_dom.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -431,17 +492,59 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
+                      break;
+                    case 0:
+                      if (!dadosAgenda.horarios_seg) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_seg.map((horario) => {
+                          if (
+                            response[0].horario_inicio.includes(
+                              horario.inicio
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
+                          ) {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          } else {
+                            horarios.push({
+                              inicio: horario.inicio,
+                              fim: horario.fim,
+                              disponivel: false,
+                            });
+                          }
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 1:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_seg.map((horario) => {
+                      if (!dadosAgenda.horarios_ter) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_ter.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -455,17 +558,26 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 2:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_ter.map((horario) => {
+                      if (!dadosAgenda.horarios_qua) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_qua.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -479,17 +591,26 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 3:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_qua.map((horario) => {
+                      if (!dadosAgenda.horarios_qui) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_qui.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -503,17 +624,26 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 4:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_qui.map((horario) => {
+                      if (!dadosAgenda.horarios_sex) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_sex.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -527,17 +657,26 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     case 5:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_sex.map((horario) => {
+                      if (!dadosAgenda.horarios_sab) {
+                        return resolve({
+                          id_agenda: idAgenda,
+                          horarios: [],
+                        });
+                      } else {
+                        dadosAgenda.horarios_sab.map((horario) => {
                           if (
                             response[0].horario_inicio.includes(
                               horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
+                            ) &&
+                            response[0].horario_fim.includes(horario.fim)
                           ) {
                             horarios.push({
                               inicio: horario.inicio,
@@ -551,32 +690,12 @@ class UsuarioRepository {
                               disponivel: false,
                             });
                           }
-                        }),
-                      });
-                      break;
-                    case 6:
-                      return resolve({
-                        id_agenda: idAgenda,
-                        horarios: dadosAgenda.horarios_sab.map((horario) => {
-                          if (
-                            response[0].horario_inicio.includes(
-                              horario.inicio
-                            ) | response[0].horario_fim.includes(horario.fim)
-                          ) {
-                            horarios.push({
-                              inicio: horario.inicio,
-                              fim: horario.fim,
-                              disponivel: false,
-                            });
-                          } else {
-                            horarios.push({
-                              inicio: horario.inicio,
-                              fim: horario.fim,
-                              disponivel: false,
-                            });
-                          }
-                        }),
-                      });
+                        });
+                        return resolve({
+                          idAgenda,
+                          horarios,
+                        });
+                      }
                       break;
                     default:
                       return reject({ erro: "Falha ao listar a agenda." });
@@ -592,7 +711,6 @@ class UsuarioRepository {
       throw new Error(error);
     });
   }
-  
 }
 
 module.exports = UsuarioRepository;

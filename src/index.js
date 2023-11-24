@@ -6,9 +6,6 @@ const morgan = require("morgan");
 
 const app = express();
 
-const found = [1, 5, 10, 20, 21].find((element) => element > 10);
-console.log(found)
-
 app.use(express.json());
 
 const corsOptions = {
