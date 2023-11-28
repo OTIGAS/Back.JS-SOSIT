@@ -10,8 +10,6 @@ class CompromissoController {
         return res.status(400).send({ erro: "Parâmetro(s) ausente(s)." });
       }
 
-      console.log(req.body)
-
       const { idAgenda, data, horario_inicio, horario_fim } = req.body;
 
       if (!idAgenda || !data || !horario_inicio || !horario_fim) {

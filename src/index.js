@@ -18,6 +18,7 @@ app.use(cors(corsOptions));
 app.use(morgan("dev"));
 
 const routes = [
+  require("./routes/compromissoRouter"),
   require("./routes/usuarioRouter"),
   require("./routes/agendaRouter"),
 ];
