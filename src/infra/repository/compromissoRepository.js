@@ -126,6 +126,52 @@ class ComrpomissoRepository {
       throw new Error(error);
     });
   }
+
+  async listarCompromissoPorIdAgenda(idAgenda) {
+    return await new Promise((resolve, reject) => {
+      this.db.query(
+        `
+          SELECT * FROM compromisso WHERE id_agenda = ?;
+        `,
+        [idAgenda],
+        (error, response) => {
+          if (error) {
+            return reject({ erro: "Falha ao listar o compromisso." });
+          } else if (!response.length) {
+            return resolve({ erro: "Compromisso não encontrado." });
+          } else {
+            return resolve(response);
+          }
+        }
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
+  }
+
+  async listarCompromissoPorIdUsuario(idUsuario) {
+    return await new Promise((resolve, reject) => {
+      this.db.query(
+        `
+          SELECT * FROM compromisso WHERE id_usuario = ?;
+        `,
+        [idUsuario],
+        (error, response) => {
+          if (error) {
+            return reject({ erro: "Falha ao listar o compromisso." });
+          } else if (!response.length) {
+            return resolve({ erro: "Compromisso não encontrado." });
+          } else {
+            return resolve(response);
+          }
+        }
+      );
+    }).catch((error) => {
+      console.log(error);
+      throw new Error(error);
+    });
+  }
 }
 
 module.exports = ComrpomissoRepository;
